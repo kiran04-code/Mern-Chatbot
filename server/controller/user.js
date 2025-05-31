@@ -1,5 +1,6 @@
 import { createToken } from "../AuthJwt/jwt.js";
 import user from "../model/user.js"
+import { SendMail } from "../middleware/SendMail.js";
 export  const createUser = async (req,res) =>{
  try {
     const {email}= req.body
@@ -17,7 +18,6 @@ export  const createUser = async (req,res) =>{
 
     res.status(201).json({
         message: "User created successfully",
-        data: data,
         sucess:true
     })
    }
@@ -37,7 +37,8 @@ export const google = async (req, res) => {
     const existingUser = await user.findOne({ email });
 
     if (existingUser) {
-      return res.json({
+        const token = createToken(existingUser)
+        return res.cookie("acess_Token",token).json({
         success: true,
         message: "User already exists",
         data: existingUser,
@@ -50,33 +51,66 @@ export const google = async (req, res) => {
     return res.json({
       success: true,
       message: "User created successfully",
-      data: newUser,
+      data:newUser,
     });
 
   } catch (error) {
     console.error("Error in google signup:", error);
-    res.status(500).json({
+      const token = createToken(existingUser)
+        return res.cookie("acess_Token",token).status(500).json({
       success: false,
       message: "Server error",
     });
   }
 };
 
-export const checkAuth = async(req,res)=>{
- const {email}  = req.body
- const data = await user.findOne({email})
- if(data) {
-    const token = createToken(user)
-    res.cookie("acess_Token",token).json({
-        sucess:true,
-        message:"User Login Sucessfully",
-        data:data
-    })
-}
-    else{
-     res.json({
-        sucess:false,
-        message:"Email id does not exist!"
-     })
+
+
+let otpStore = {};
+
+export const checkAuth = async (req, res) => {
+  const { email, otp } = req.body
+  if (email && !otp) {
+    const userData = await user.findOne({ email });
+    if (!userData) {
+      return res.status(404).json({ success: false, message: "User not found" });
     }
- }
+
+    const generatedOtp = Math.floor(1000 + Math.random() * 9000);
+    otpStore[email] = generatedOtp; 
+    await SendMail(email, "Your MernBot OTP", generatedOtp);
+
+    return res.status(200).json({ success: true, message: "OTP sent to email" });
+  }
+
+
+  if (email && otp) {
+    const storedOtp = otpStore[email];
+    if (!storedOtp) {
+      return res.status(400).json({ success: false, message: "No OTP sent to this email" });
+    }
+
+    if (parseInt(otp) === storedOtp) {
+      delete otpStore[email]; // remove OTP after successful use
+      const userData = await user.findOne({ email });
+      const token = createToken(userData);
+      res.cookie("acess_Token", token);
+      return res.status(200).json({
+        success: true,
+        message: "Login Successful",
+        data: userData,
+      });
+    } else {
+      return res.status(400).json({ success: false, message: "Invalid OTP" });
+    }
+  }
+
+  return res.status(400).json({ success: false, message: "Incomplete request: email is required" });
+};
+
+export const  Logout = (req,res)=>{
+   res.clearCookie("acess_Token").json({
+    sucess:true,
+    message:"Logout Sucessfull"
+   })
+}

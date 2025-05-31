@@ -1,31 +1,32 @@
-import { createTransport } from "nodemailer"
+import { createTransport } from "nodemailer";
 
-export const SendMail = async (email,subject) => {
+export const SendMail = async (email, subject,otps) => {
   const transport = createTransport({
-    host:"smpt.gmail.com",
-    port :465,
-    auth:{
-        user:process.env.EMAIL,
-        pass:process.env.EMAIL_PASSWORD
-    }
-  })
-
-  const otp = Math.floor(Math.random()*1000)
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true, 
+    auth: {
+      user: process.env.EMAIL,
+      pass: process.env.EMAIL_PASSWORD,
+    },
+  });
   const html = `
-    <div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f4f4f4;">
-      <h2 style="color: #333;">Your OTP Code</h2>
-      <p style="font-size: 18px;">Use the following OTP to verify your account:</p>
-      <div style="font-size: 24px; font-weight: bold; background: #e0e0e0; padding: 10px; border-radius: 8px; width: fit-content;">
-        ${otp}
+    <div style="font-family: Arial, sans-serif; padding: 20px; background-color: #fff; border: 1px solid #eee; border-radius: 10px; max-width: 500px; margin: auto;">
+      <h2 style="color: rgb(252, 124, 104);">Your OTP Code</h2>
+      <p style="font-size: 16px; color: #333;">Use the following OTP to verify your account:</p>
+      <div style="font-size: 32px; font-weight: bold; background: rgb(252, 124, 104); color: white; padding: 12px 20px; border-radius: 8px; width: fit-content;">
+        ${otps}
       </div>
-      <p>This OTP is valid for 10 minutes.</p>
+      <p style="color: #666; margin-top: 15px;">This OTP is valid for 10 minutes. Do not share it with anyone.</p>
+      <p style="margin-top: 30px; font-size: 12px; color: #999;">Thank you for using our service.</p>
     </div>
   `;
 
-  await transport.sendMail ({
-    from:process.env.EMAIL,
-    to:email,
+  await transport.sendMail({
+    from: `"MernBot Auth" <${process.env.EMAIL}>`,
+    to: email,
     subject,
-    html:html
-  })
-}
+    html,
+  });
+
+};
