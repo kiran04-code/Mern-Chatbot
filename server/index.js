@@ -1,6 +1,7 @@
 import express from 'express';
 const app = express()
 import routes from "./routes/user.js"
+import  ChatRoutes from "./routes/chatsRoutes.js"
 import cookieParser from 'cookie-parser';
 import {checksAuth} from "./middleware/auth.js"
 import dotenv from 'dotenv';
@@ -17,9 +18,10 @@ ConnectedDb(process.env.MONGO_URL).then(()=>{
     console.log("Error connecting to MongoDB", err);
 })
 app.get("/",(req,res)=>{
-    res.send(req.user)
+    res.send(req.user._id)
 })
 app.use("/api",routes)
+app.use("/api",ChatRoutes)
  app.listen(port,()=>{
     console.log(`Server is running on http://localhost:${port}`);
  })
