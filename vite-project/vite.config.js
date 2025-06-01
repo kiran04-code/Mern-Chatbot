@@ -8,7 +8,7 @@ export default defineConfig({
   server: {
     proxy:{
       "/api":{
-        target:"http://localhost:3006",
+        target:"https://mern-chatbot-t6v7.onrender.com",
         changeOrigin: true,
 }    }
   },
