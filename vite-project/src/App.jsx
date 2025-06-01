@@ -4,7 +4,7 @@ import './App.css'
 import Home from './pages/Home'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Signup from './pages/Signup'
-import Signin from './pages/signin'
+ import SignIn from "./pages/signin"
 import Getotp from './pages/getotp'
 import { StartChat } from './pages/StarChat'
 function App() {
@@ -13,7 +13,7 @@ function App() {
     <Routes>
       <Route path="/" element={<Home/>} />
       <Route path="/signup" element={<Signup/>} />
-      <Route path="/signin" element={<Signin/>} />
+      <Route path="/signin" element={<SignIn/>} />
       <Route path="/getotp" element={<Getotp/>} />
       <Route path="/startChat" element={<StartChat/>} />
     </Routes>

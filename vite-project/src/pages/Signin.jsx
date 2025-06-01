@@ -3,7 +3,7 @@ import Google from '../Component/google';
 import {useNavigate} from 'react-router-dom';
 import { signInSuccess,signInFail  } from '../redux/userslice/slice';
 import { useDispatch,useSelector } from 'react-redux';
-const Signin = () => {
+const SignIn = () => {
   const data = useSelector(state=>state.user)
   const dispatch = useDispatch()
   const navigate = useNavigate();
@@ -62,4 +62,4 @@ try {
   );
 };
 
-export default Signin;
+export default SignIn;
