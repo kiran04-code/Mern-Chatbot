@@ -19,7 +19,7 @@ A full-featured AI Chatbot Web App built using the MERN Stack (MongoDB, Express,
 
     🔄 Protected routes & session persistence
 
-    🛠️ Used Technologies
+🛠️ Technologies Used
 💻 Frontend (Vite + React)
 
     React.js – UI library for building user interfaces
@@ -36,7 +36,7 @@ A full-featured AI Chatbot Web App built using the MERN Stack (MongoDB, Express,
 
     JWT Token Handling – For frontend auth integration
 
-🔧 Backend (Node + Express)
+🔧 Backend (Node.js + Express)
 
     Node.js – JavaScript runtime environment
 
@@ -70,39 +70,28 @@ A full-featured AI Chatbot Web App built using the MERN Stack (MongoDB, Express,
 
 🧪 Dev Tools
 
-    ESLint – Code linting
-
     Git & GitHub – Version control and collaboration
-   ⚙️ Installation & Usage
-   1. Clone the frontend repo
+
+⚙️ Installation & Usage
+
+    Clone the frontend repo
 
     git clone https://github.com/kiran04-code/Mern-Chatbot.git
-   2 .Go to server (run client side)
-   
-      cd server
-      
-   2. Install dependencies
 
+    Go to the client side and install dependencies
+
+    cd vite-project
     npm install
-    
-  3. Start development server
-
     npm run dev
-   
-   1 .Go to server (run server side)
-   
-      cd server
-      
-   2. Install dependencies
 
+Go to the server side and install dependencies
+
+    cd server
     npm install
-    
-  3. Start development server
+    npm start
 
-    npm start 
 🚀 Live Demo
 
-🔗 Full-WebLink - https://ai-chat-backend-demo.onrender.com
-  
+🔗 Full WebLink
     
  
