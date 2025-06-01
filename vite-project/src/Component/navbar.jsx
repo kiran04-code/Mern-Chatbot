@@ -14,6 +14,7 @@ const Navbar = () => {
     const data = await res.json()
     if(data.sucess){
      navigate("/")
+     window.location.reload()
      dipatch(signInSuccess())
     }
   }

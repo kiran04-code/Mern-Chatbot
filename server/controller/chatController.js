@@ -87,7 +87,7 @@ export const getAllconver = async (req, res) => {
 export const deleteconv = async(req,res)=>{
    try {
        await chat.findByIdAndDelete(req.params.id)
-      res.status.json({
+      res.status(200).json({
          message:"Chat Delete sucessfully"
       })
    } catch (error) {

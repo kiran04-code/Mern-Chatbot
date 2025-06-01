@@ -13,51 +13,44 @@ export const  ChatProvider = ({ children }) => {
    const [selected,setSelected] = useState(null)
   const handleApiChats = async () => {
   if (prompt.trim() === "") return alert("Please write a prompt.");
-
   setNewchatsLoading(true);
+
   try {
- const response = await axios({
-  url: "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyBy79_fffxHeoF3b7dsLcoXuTxdLj04IkQ",
-  method: "POST",
-  data: {
-    contents: [{ parts: [{ text: prompt }] }],
-  },
-});
+    const response = await axios.post(
+      "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyBy79_fffxHeoF3b7dsLcoXuTxdLj04IkQ",
+      {
+        contents: [{ parts: [{ text: prompt }] }],
+      }
+    );
 
-const messages = {
-  question: prompt,
-  answer: response.data.candidates[0].content.parts[0].text,
-};
+    const question = prompt;
+    const answer = response?.data?.candidates?.[0]?.content?.parts?.[0]?.text || "No response";
+    setPrompt(""); // clear input
 
-// Update frontend messages
-setMessages((prev) => [...prev, messages]);
-setPrompt("");  // clear input
-setNewchatsLoading(false);
+    const res = await fetch(`/api/addconv/${selected}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ question, answer }),
+    });
 
-try {
-  const res = await fetch(`/api/addconv/${selected}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-        question: prompt,
-         answer: response.data.candidates[0].content.parts[0].text,
-    }), 
-  });
-  
-  const data = await res.json();
-  setMessages(data)
-} catch (error) {
-  console.error("Error sending message to backend:", error);
-}
+    const data = await res.json();
+    if (Array.isArray(messages)) {
+      setMessages((prev) => [...prev, data.Conversation]);
+    } else {
+      console.warn("Messages state is not an array. Resetting.");
+      setMessages([data.Conversation]); // Fallback
+    }
 
   } catch (error) {
     alert("Something went wrong. Please try again.");
     console.error(error);
-     setNewchatsLoading(false);
-  } 
+  } finally {
+    setNewchatsLoading(false);
+  }
 };
+
 const fetchats = async () => {
   try {
     const res = await fetch("api/GetAllchats", {
@@ -70,7 +63,6 @@ const fetchats = async () => {
     if (!res.ok) {
       throw new Error(`HTTP error! Status: ${res.status}`);
     }
-
     const data = await res.json();
     setchats(data);
     setSelected(data[0]._id)
@@ -88,8 +80,8 @@ const fetchats = async () => {
     }
   }) 
   await res.json()
-  fetchats()
   setcreatchatLod(false)
+   fetchats()
  }
 
  const fetcmessage = async() =>{
@@ -111,11 +103,21 @@ const fetchats = async () => {
  useEffect(()=>{
   fetcmessage()
  },[selected])
- useEffect(()=>{
+
+ const deleleteConv= async() =>{
+  const res = await fetch(`api/deleteconv/${selected}`,{
+    method:"post",
+    headers:{
+      "Content-Type":"application/josn"
+
+    }
+  })
+  const data = await res.json()
   fetchats()
- },[])
+  console.log(data)
+ }
   return (
-    <ChatContext.Provider value={{ prompt,setPrompt,handleApiChats ,NewchatsLoading,messages,chats,fetchats,cretaechatnew,crechatLod,selected,setSelected}}>
+    <ChatContext.Provider value={{ prompt,setPrompt,handleApiChats ,NewchatsLoading,messages,chats,fetchats,cretaechatnew,crechatLod,selected,setSelected,deleleteConv}}>
       {children} 
     </ChatContext.Provider>
   );

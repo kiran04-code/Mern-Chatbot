@@ -5,7 +5,7 @@ import { MdDelete } from "react-icons/md";
 import { LoadingButtonSpinner } from "./Loading";
 const Sidebar = ({ Isopen, ToggleSideBar }) => {
 
-  const { chats, fetchats ,cretaechatnew,crechatLod,setSelected,selected} = chatsData()
+  const { chats, fetchats ,cretaechatnew,crechatLod,setSelected,selected,deleleteConv} = chatsData()
   useEffect(() => {
     fetchats()
   }, [])
@@ -52,7 +52,7 @@ const Sidebar = ({ Isopen, ToggleSideBar }) => {
                   className="w-full text-left p-3 bg-zinc-700 hover:bg-zinc-600 transition-all mt-3 flex items-center rounded-xl shadow-sm"
                 >
                   <p className="text-white text-sm truncate w-full">{e.latestChat.slice(0,37)}...</p>
-                  <button className="text-[rgb(352,124,104)]">
+                  <button className="text-[rgb(352,124,104)]"  onClick={deleleteConv}>
                     <MdDelete/>
                   </button>
                 </button>
@@ -66,12 +66,7 @@ const Sidebar = ({ Isopen, ToggleSideBar }) => {
       </div>
 
       <div className="absolute bottom-0 mb-6 w-full">
-        <button
-          className="px-4 py-1 font-semibold rounded-xl flex justify-center items-center"
-          style={{ background: "rgb(252, 124, 104)" }}
-        >
-          Logout
-        </button>
+       
       </div>
     </div>
   );
