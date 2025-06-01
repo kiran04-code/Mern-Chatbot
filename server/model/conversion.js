@@ -6,7 +6,7 @@ const converSchema = new mongoose.Schema({
     ref:"chat",
     require:true
   },
-  Questions:{
+  question:{
     type:String,
     require:true
   },

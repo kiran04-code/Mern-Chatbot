@@ -1,6 +1,14 @@
 import { IoClose } from "react-icons/io5";
-
+import { chatsData } from "../context/ChatContext";
+import { useEffect } from "react";
+import { MdDelete } from "react-icons/md";
+import { LoadingButtonSpinner } from "./Loading";
 const Sidebar = ({ Isopen, ToggleSideBar }) => {
+
+  const { chats, fetchats ,cretaechatnew,crechatLod,setSelected,selected} = chatsData()
+  useEffect(() => {
+    fetchats()
+  }, [])
   return (
     <div
       className={`fixed inset-y-0 left-0 h-screen bg-zinc-800 text-white p-4 z-50 transform transition-transform duration-300 
@@ -24,17 +32,36 @@ const Sidebar = ({ Isopen, ToggleSideBar }) => {
       </div>
 
       <div className="mb-4">
-        <button className="p-2 bg-zinc-600 rounded-xl w-full hover:bg-zinc-500 transition-all">
-          New Chat +
+        <button className="p-2 bg-zinc-600 rounded-xl w-full hover:bg-zinc-500 transition-all" onClick={cretaechatnew}>
+          {
+            crechatLod ?<LoadingButtonSpinner/>:"New Chat +"
+          }
         </button>
       </div>
 
       <div>
         <p className="text-sm ml-3 font-semibold text-zinc-400">Recent Chats</p>
-        <div className="max-h-[500px] overflow-y-auto mb-20 md:mb-0 thin-scrollbar">
-          <button className="w-full text-left p-2 bg-zinc-700 hover:bg-zinc-500 transition-all mt-3 flex justify-center items-center rounded-xl">
-            Hi My Name is Kiran
-          </button>
+
+        <div className="max-h-[400px] overflow-y-auto mb-20 md:mb-0 pr-2 thin-scrollbar">
+          {
+            chats && chats.length > 0 ? (
+              chats.map((e) => (
+                <button
+                  key={e._id}
+                  onClick={()=>setSelected(e._id)}
+                  className="w-full text-left p-3 bg-zinc-700 hover:bg-zinc-600 transition-all mt-3 flex items-center rounded-xl shadow-sm"
+                >
+                  <p className="text-white text-sm truncate w-full">{e.latestChat.slice(0,37)}...</p>
+                  <button className="text-[rgb(352,124,104)]">
+                    <MdDelete/>
+                  </button>
+                </button>
+                
+              ))
+            ) : (   
+              <p className="text-zinc-400 text-sm p-4">No Chat Yet</p>
+            )
+          }
         </div>
       </div>
 

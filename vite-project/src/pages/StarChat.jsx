@@ -2,27 +2,39 @@ import Sidebar from "../Component/sidebar";
 import { useState } from "react";
 import { IoMenu } from "react-icons/io5";
 import { Headers } from "../Component/Headers";
-import { RiRobot3Fill } from "react-icons/ri";
-import { chatsData } from "../context/ChatContext"
+import { FaRobot } from "react-icons/fa";
+import { chatsData } from "../context/ChatContext";
 import { useSelector } from "react-redux";
 import { Loadingsmall } from "../Component/Loading";
 import { MdSend } from "react-icons/md";
+import { useRef } from "react";
+import { useEffect } from "react";
 
 export const StartChat = () => {
     const [Isopen, setIsOpne] = useState(false);
-    const { prompt, setPrompt, handleApiChats, NewchatsLoading, messages } = chatsData()
-    console.log(prompt)
-    const data = useSelector(state => state.user)
+    const { prompt, setPrompt, handleApiChats, NewchatsLoading, messages,loading ,fetcmessage} = chatsData();
+    const data = useSelector(state => state.user);
+
     const ToggleSideBar = () => {
         setIsOpne(!Isopen);
     };
-    const submithandler = (e) => {
-        e.preventDefault()
-        handleApiChats()
-    }
-    return (
-        <div className="w-full h-screen bg-zinc-950 relative flex">
 
+    const submithandler = (e) => {
+        e.preventDefault();
+        handleApiChats();
+    };
+  
+    const meesageContainer = useRef()
+    useEffect(()=>{
+     if(meesageContainer.current){
+        meesageContainer.current.scrollTo({
+            top:meesageContainer.current.scrollHeight,
+            behavior:"smooth"
+        })
+     }
+    },[messages])
+    return (
+        <div className="w-full h-screen bg-zinc-950 relative flex flex-col md:flex-row overflow-hidden">
             <Sidebar Isopen={Isopen} ToggleSideBar={ToggleSideBar} />
 
             <button
@@ -33,36 +45,44 @@ export const StartChat = () => {
             </button>
 
             {/* Main Content */}
-            <div className="flex-1 text-white p-6 mt-16 md:mt-0">
+          <div className="flex-1 text-white p-4 sm:p-6 pt-20 md:pt-6">
                 <Headers />
-                <div className="flex-1 mt-10  p-6 max-h-[600px] overflow-y-auto  mb-25 md:mb-0 thin-scrollbar bg-zinc-800 rounded-2xl">
-                    {
-                        messages && messages.length > 0 ? messages.map((e, i) => (
-                            <div key={i}>
-                                <div className="mb-4 rounded bg-blue-700 text-white">
+
+                <div className="flex-1 mt-6 sm:mt-10 p-4 sm:p-6 max-h-[400px] overflow-y-auto mb-28 md:mb-0 thin-scrollbar bg-zinc-800 rounded-2xl" ref={meesageContainer}>
+                    {messages && messages.length > 0 ? messages.map((e, i) => (
+                        <div key={i}>
+                            <div className="mb-4 rounded text-white">
+                                <div className="flex items-center gap-2">
                                     <div className="h-[30px] w-[30px] rounded-full bg-zinc-50 overflow-hidden">
-                                        <img className="w-full h-full object-cover" src={data.currentUser.data.profileImage} alt="" />
+                                        <img className="w-full h-full object-cover" src={data.currentUser.data.profileImage} alt="User" />
                                     </div>
-                                    {e.question}
+                                    <span className="text-sm text-white">You</span>
                                 </div>
-                                <div className="mb-4 rounded bg-blue-700 text-white">
-                                    <div className="p-2 text-[rgb(352,124,104)] rounded-full bg-zinc-50 text-2xl " >
-                                        <RiRobot3Fill />
-                                    </div>
-                                    <p className="text-white">{e.answer}</p>
-                                </div>
+                                <p className="mt-3 p-2 bg-zinc-600 rounded-2xl">{e.question}</p>
                             </div>
-                        )) : (<p>No Chat Yet</p>)}
-                    {
-                        NewchatsLoading && <Loadingsmall />
-                    }
+
+                            <div className="mb-4 rounded text-white">
+                                <div className="flex items-center gap-2">
+                                    <div className="p-2 text-[rgb(252,124,104)] rounded-full bg-zinc-50 text-xl h-[30px] w-[30px] flex justify-center items-center">
+                                        <FaRobot />
+                                    </div>
+                                    <span className="text-sm text-white">Bot</span>
+                                </div>
+                                <p className="mt-3 p-2 bg-zinc-600 rounded-2xl">{e.answer}</p>
+                            </div>
+                        </div>
+                    )) : (<p>No Chat Yet</p>)}
+
+                    {NewchatsLoading && <Loadingsmall />}
                 </div>
             </div>
-            <div className="fixed bottom-0 right-17 left-auto  rounded-4xl w-[70%] p-4 bg-zinc-800 mb-2 flex">
-                <form onSubmit={submithandler} className="flex items-center w-full space-x-4">
+
+            {/* Input Field */}
+            <div className="fixed bottom-5 UNJHUSWX left-0 right-0 md:left-auto md:right-6 md:w-[70%] p-3 sm:p-4 bg-zinc-800 rounded-t-xl md:rounded-2xl z-40">
+                <form onSubmit={submithandler} className="flex items-center w-full space-x-3">
                     <input
                         type="text"
-                        className="text-white bg-zinc-700 rounded-xl p-4 w-full placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-[rgb(252,124,104)]"
+                        className="text-white bg-zinc-700 rounded-xl p-3 sm:p-4 w-full placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-[rgb(252,124,104)]"
                         placeholder="Ask anything..."
                         onChange={(e) => setPrompt(e.target.value)}
                         value={prompt}
@@ -70,7 +90,7 @@ export const StartChat = () => {
                     />
                     <button
                         type="submit"
-                        className="text-[rgb(252,124,104)] text-2xl p-3 bg-zinc-600 rounded-full hover:bg-zinc-500 transition-all"
+                        className="text-[rgb(252,124,104)] text-xl sm:text-2xl p-3 bg-zinc-600 rounded-full hover:bg-zinc-500 transition-all"
                     >
                         <MdSend />
                     </button>

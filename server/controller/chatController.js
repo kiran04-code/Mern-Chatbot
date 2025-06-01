@@ -1,5 +1,7 @@
 import  chat from "../model/chat.js"
 import conv from "../model/conversion.js";
+
+import mongoose from "mongoose"; // Make sure this is import
 export const createchat = async (req, res) => {
   try {
     const chats = await chat.create({
@@ -27,46 +29,60 @@ export const GetAllchats = async(req,res)=>{
  }
 }
 
-export const addconv = async (req,res)=>{
-   try {
-      const chats = await chat.findById(req.param.id)
-      if(!chats)  return res.status(404).json({
-         message:"Not Chat This Id"
-      })
+export const addconv = async (req, res) => {
+  try {
+    const chats = await chat.findById(req.params.id);
+    if (!chats) {
+      return res.status(404).json({
+        message: "No chat with this ID",
+      });
+    }
 
-     const Conversation = await conv.create({
-     chat :chats._id,
-     Questions:req.body.Questions,
-     answer:req.body.answer
-     })
-      const UpdatedChat = await chat.findByIdAndUpdate(req.param.id,{latestChat:req.body.Questions},{new:true})
-      res.json({
-         UpdatedChat,
-         Conversation
-      })
-   } catch (error) {
-        res.status(500).json({
-        message:error.message
-    })
-   }
+    const Conversation = await conv.create({
+      chat: req.params.id,
+      question: req.body.question,
+      answer: req.body.answer,
+    });
 
-}
+    await chat.findByIdAndUpdate(
+      req.params.id, // ✅ fixed typo here
+      { latestChat: req.body.question },
+      { new: true }
+    );
 
-export const getAllconver = async(req,res)=>{
-   try {
-      const allconv = await conv.findById({chat:req.params.id})
-      if(!allconv){
-         return res.status(404).json({
-          message:" No  Conversion  Chat here"
-         })
-      }
-      res.json(allconv)
-   } catch (error) {
-      res.status(500).json({
-        message:error.message
-      })
-   }
-}
+    res.json({
+      Conversation,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+export const getAllconver = async (req, res) => {
+  const userid = req.params.id;
+
+  // Validate ID format
+  if (!mongoose.Types.ObjectId.isValid(userid)) {
+    return res.status(400).json({ message: "Invalid conversation ID" });
+  }
+
+  try {
+    const allconv = await conv.find({ chat: userid }).populate("chat");
+
+    if (!allconv || allconv.length === 0) {
+      return res.status(404).json({ message: "No conversations found" });
+    }
+
+    res.json(allconv);
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
 
 export const deleteconv = async(req,res)=>{
    try {
