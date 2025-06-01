@@ -17,9 +17,6 @@ ConnectedDb(process.env.MONGO_URL).then(()=>{
 }).catch((err)=>{
     console.log("Error connecting to MongoDB", err);
 })
-app.get("/",(req,res)=>{
-    res.send(req.user._id)
-})
 app.use("/api",routes)
 app.use("/api",ChatRoutes)
  app.listen(port,()=>{
