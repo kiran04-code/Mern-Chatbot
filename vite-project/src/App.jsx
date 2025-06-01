@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Signup from './pages/Signup'
 import Signin from './pages/signin'
 import Getotp from './pages/getotp'
+import { StartChat } from './pages/StarChat'
 function App() {
   return (
     <BrowserRouter>
@@ -14,6 +15,7 @@ function App() {
       <Route path="/signup" element={<Signup/>} />
       <Route path="/signin" element={<Signin/>} />
       <Route path="/getotp" element={<Getotp/>} />
+      <Route path="/startChat" element={<StartChat/>} />
     </Routes>
     </BrowserRouter>
   )

@@ -10,12 +10,14 @@ const Headline = () => {
       <a href="/signin">
      {
   data.currentUser ? (
-    <button
+   <a href='/startChat'>
+     <button
       className="text-white font-semibold py-2 px-4 rounded-2xl mt-6 hover:bg-gray-200 transition-all duration-300 filter brightness-90 saturate-150"
       style={{ backgroundColor: 'rgb(252, 124, 104)' }} // fixed invalid RGB value
     >
       Start Chat
     </button>
+   </a>
   ) : (
     <button
       className="text-white font-semibold py-2 px-4 rounded-2xl mt-6 hover:bg-gray-200 transition-all duration-300 filter brightness-90 saturate-150"
