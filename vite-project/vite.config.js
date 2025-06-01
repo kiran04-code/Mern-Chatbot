@@ -8,7 +8,7 @@ export default defineConfig({
   server: {
     proxy:{
       "/api":{
-        target:"https://mern-chatbot-t6v7.onrender.com",
+        target:"https://mern-chatbot-3-1.onrender.com/m",
         changeOrigin: true,
 }    }
   },
