@@ -76,7 +76,7 @@ A full-featured AI Chatbot Web App built using the MERN Stack (MongoDB, Express,
    ⚙️ Installation & Usage
    1. Clone the frontend repo
 
-    git clone https://github.com/yourusername/vite-frontend-chat.git
+    git clone https://github.com/kiran04-code/Mern-Chatbot.git
    2 .Go to server (run client side)
    
       cd server
@@ -91,7 +91,7 @@ A full-featured AI Chatbot Web App built using the MERN Stack (MongoDB, Express,
    
    1 .Go to server (run server side)
    
-      cd vite-project
+      cd server
       
    2. Install dependencies
 
