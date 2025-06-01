@@ -12,12 +12,10 @@ const Navbar = () => {
   const handlelogout = async ()=>{
     const res = await fetch("api/Logout")
     const data = await res.json()
-    console.log(data)
     if(data.sucess){
      navigate("/")
+     dipatch(signInSuccess())
     }
-    dipatch(signInSuccess())
-    
   }
   return (
     <nav className=" p-4 relative">
