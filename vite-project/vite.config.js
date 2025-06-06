@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "https://mern-chatbot-3-1.onrender.com",
+        target: process.env.VITE_API_URL,  // use env var here
         changeOrigin: true,
       }
     }
@@ -17,7 +17,6 @@ export default defineConfig({
       output: {
         manualChunks(id) {
           if (id.includes('node_modules')) {
-            // Put all dependencies from node_modules in a vendor chunk
             return 'vendor'
           }
         }
