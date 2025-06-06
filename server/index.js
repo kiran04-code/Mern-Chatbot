@@ -1,6 +1,7 @@
 import express from 'express';
 const app = express()
 import routes from "./routes/user.js"
+import cors from 'cors';
 import  ChatRoutes from "./routes/chatsRoutes.js"
 import cookieParser from 'cookie-parser';
 import {checksAuth} from "./middleware/auth.js"
@@ -12,6 +13,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser())
 app.use(checksAuth("acess_Token"))
+app.use(cors());
 ConnectedDb(process.env.MONGO_URL).then(()=>{
     console.log("Connected to MongoDB")
 }).catch((err)=>{
