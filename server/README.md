@@ -1,3 +1,6 @@
+<<<<<<< HEAD
+# bakend-of-mernbot
+=======
 💬 AI Chat App – MERN Stack + Gemini API + JWT + Redux/Context
 
 A full-featured AI Chatbot Web App built using the MERN Stack (MongoDB, Express, React, Node.js) with integration of Google Gemini API for generating smart AI responses. The app includes secure JWT Authentication and state management using either Redux or React Context API.
@@ -95,3 +98,4 @@ Go to the server side and install dependencies
 🔗 Full WebLink
     
  
+>>>>>>> 9241e8b (complete bakend)

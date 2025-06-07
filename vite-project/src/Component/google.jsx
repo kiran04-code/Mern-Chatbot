@@ -12,7 +12,6 @@ const Google = () => {
     const provider = new GoogleAuthProvider();
     const auth = getAuth(app);
     const result = await signInWithPopup(auth,provider);
-    console.log(result);
    e.preventDefault();
     try{
       const res = await fetch("api/google",{
@@ -37,12 +36,17 @@ const Google = () => {
     }
   }
   return (
-    <div className="flex justify-center items-center px-4">
-      <button onClick={handleGoogleLogin} type="submit" className="mt-2 w-full sm:w-[300px] md:w-[350px] lg:w-[400px] flex flex-row items-center justify-center gap-2 bg-amber-100 py-2  shadow-md hover:bg-amber-200 transition">
-        <FaGoogle style={{ color: "rgb(232, 74, 50)" }} />
-        <span className="text-sm sm:text-base">Login with Google</span>
-      </button>
-    </div>
+  <div className="flex justify-center items-center w-full">
+  <button
+    onClick={handleGoogleLogin}
+    type="submit"
+    className="mt-2 w-full sm:w-[400px] md:w-[450px] lg:w-[400px] flex flex-row items-center justify-center gap-2 bg-amber-100 text-black py-2 rounded-tl-2xl rounded-br-2xl shadow-md hover:bg-amber-200 transition"
+  >
+    <FaGoogle className="text-base sm:text-lg" style={{ color: "rgb(232, 74, 50)" }} />
+    <span className="text-sm sm:text-base">Login with Google</span>
+  </button>
+</div>
+
   );
 };
 

@@ -7,6 +7,8 @@ import cookieParser from 'cookie-parser';
 import {checksAuth} from "./middleware/auth.js"
 import dotenv from 'dotenv';
 dotenv.config();
+import path from "path"
+
 import { ConnectedDb } from './config/db.js';
 const port =  process.env.PORT ||3008
 app.use(express.json())

@@ -42,7 +42,6 @@ try {
           placeholder="Enter your email"
           onChange={handleChnage}
           name="email"
-          
           className="w-full h-12 p-3 mb-4 bg-zinc-800 text-white  placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#fc7c68]"
         />
         <button
