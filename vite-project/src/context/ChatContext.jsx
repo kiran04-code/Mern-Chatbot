@@ -27,7 +27,7 @@ export const  ChatProvider = ({ children }) => {
     const answer = response?.data?.candidates?.[0]?.content?.parts?.[0]?.text || "No response";
     setPrompt(""); // clear input
 
-    const res = await fetch(`/api/addconv/${selected}`, {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/addconv/${selected}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -15,7 +15,7 @@ console.log(from)
 const handlesubmit = async (e) =>{
 e.preventDefault();
 try {
-  const res = await fetch("api/signup", {
+  const res = await fetch(`${import.meta.env.VITE_API_URL}/signup`, {
     method:"POST",
     headers:{
       "Content-type":"application/json"
